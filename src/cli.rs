@@ -1,3 +1,4 @@
+//! The top-level commandline functionality
 pub mod options;
 mod run;
 mod runnable;

@@ -1,3 +1,4 @@
+//! Commandline options and parsing
 use clap::{Args, Parser, Subcommand};
 use reqwest::Url;
 
@@ -17,12 +18,13 @@ impl Options {
     }
 }
 
+/// The command to execute
 #[derive(Debug, Subcommand)]
 pub enum Command {
     Fetch(FetchOptions),
 }
 
-/// Manage open access research papers
+/// Fetch a publication and insert it into the repository
 #[derive(Debug, Args)]
 pub struct FetchOptions {
     pub url: Url,

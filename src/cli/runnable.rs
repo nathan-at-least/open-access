@@ -1,6 +1,7 @@
 use crate::cli::options::{Command, FetchOptions, Options};
 use async_trait::async_trait;
 
+/// An abstraction for running cli logic for different options and commands
 #[cfg_attr(not(doc), async_trait)]
 pub trait Runnable {
     async fn run(&self) -> anyhow::Result<()>;
@@ -25,6 +26,6 @@ impl Runnable for Command {
 #[cfg_attr(not(doc), async_trait)]
 impl Runnable for FetchOptions {
     async fn run(&self) -> anyhow::Result<()> {
-        todo!("{:#?}", self.url);
+        crate::cmd::fetch(&self.url).await
     }
 }
