@@ -6,7 +6,7 @@ use reqwest::Url;
 #[command(author, version, about, long_about = None)]
 pub struct Options {
     #[command(subcommand)]
-    command: Command,
+    pub command: Command,
 }
 
 impl Options {
@@ -25,5 +25,5 @@ pub enum Command {
 /// Manage open access research papers
 #[derive(Debug, Args)]
 pub struct FetchOptions {
-    url: Url,
+    pub url: Url,
 }
