@@ -1,4 +1,5 @@
 //! Commandline options and parsing
+use crate::Repo;
 use clap::{Args, Parser, Subcommand};
 use reqwest::Url;
 
@@ -6,6 +7,9 @@ use reqwest::Url;
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
 pub struct Options {
+    #[clap(short, long, default_value_t)]
+    pub repo: Repo,
+
     #[command(subcommand)]
     pub command: Command,
 }
@@ -15,6 +19,13 @@ impl Options {
     pub fn parse() -> Self {
         // This just wraps the trait method so that consumers do not need the trait in scope:
         <Self as Parser>::parse()
+    }
+
+    /// Run the cli behavior with the given options in `self`
+    pub async fn run(&self) -> anyhow::Result<()> {
+        match &self.command {
+            Command::Fetch(opts) => crate::cmd::fetch(&self.repo, &opts.url).await,
+        }
     }
 }
 
