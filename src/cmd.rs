@@ -1,6 +1,5 @@
 //! High level commands below the [cli](crate::cli) layer
-use crate::Repo;
-use reqwest::Url;
+use crate::{Repo, Url};
 
 /// Fetch a publication at the given [Url] along with associated metadata
 ///

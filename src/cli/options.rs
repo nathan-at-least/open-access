@@ -1,7 +1,6 @@
 //! Commandline options and parsing
-use crate::Repo;
+use crate::{Repo, Url};
 use clap::{Args, Parser, Subcommand};
-use reqwest::Url;
 
 /// Manage open access research papers
 #[derive(Debug, Parser)]
