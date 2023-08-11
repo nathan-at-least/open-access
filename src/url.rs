@@ -25,7 +25,7 @@ impl Url {
         self.inner.host_str()
     }
 
-    pub fn path_segments(&self) -> impl Iterator<Item=&str> {
+    pub fn path_segments(&self) -> impl Iterator<Item = &str> {
         self.inner.path_segments().into_iter().flatten()
     }
 }
@@ -47,9 +47,9 @@ impl fmt::Display for Url {
 
 #[derive(Clone, Debug, thiserror::Error)]
 pub enum ParseError {
-    #[error("unsupported scheme")]
+    #[error("unsupported scheme: {0}")]
     UnsupportedScheme(#[from] UnsupportedScheme),
-    #[error("malformed url")]
+    #[error("malformed url: {0:?}")]
     Inner(#[from] InnerParseError),
 }
 

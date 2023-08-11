@@ -28,7 +28,7 @@ impl fmt::Display for Scheme {
 }
 
 #[derive(Clone, Debug, thiserror::Error)]
-#[error("unsupported scheme")]
+#[error("unsupported scheme: {0:?}")]
 pub struct UnsupportedScheme(pub String);
 
 impl FromStr for Scheme {
