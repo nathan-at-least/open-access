@@ -1,20 +1,39 @@
-mod scheme;
-
 use ::url::{ParseError as InnerParseError, Url as InnerUrl};
 use std::fmt;
 use std::str::FromStr;
 
-pub use self::scheme::{Scheme, UnsupportedScheme};
-
 #[derive(Clone, Debug)]
 pub struct Url {
     inner: InnerUrl,
-    scheme: Scheme,
+}
+
+#[derive(Clone, Debug, thiserror::Error)]
+#[error("malformed url {input:?}: {reason}")]
+pub struct ParseError {
+    input: String,
+    reason: ParseErrorReason,
+}
+
+#[derive(Clone, Debug, thiserror::Error)]
+pub enum ParseErrorReason {
+    #[error("unsupported scheme {0:?}")]
+    UnsupportedScheme(String),
+    #[error("{0}")]
+    Inner(#[from] InnerParseError),
 }
 
 impl Url {
-    pub fn scheme(&self) -> Scheme {
-        self.scheme
+    fn parse_str(s: &str) -> Result<Self, ParseErrorReason> {
+        let inner = <InnerUrl as FromStr>::from_str(s)?;
+        match inner.scheme() {
+            "http" | "https" | "ftp" => Ok(()),
+            other => Err(ParseErrorReason::UnsupportedScheme(other.to_string())),
+        }?;
+        Ok(Url { inner })
+    }
+
+    pub fn scheme(&self) -> &str {
+        self.inner.scheme()
     }
 
     pub fn port(&self) -> Option<u16> {
@@ -30,36 +49,20 @@ impl Url {
     }
 }
 
-impl TryFrom<InnerUrl> for Url {
-    type Error = UnsupportedScheme;
-
-    fn try_from(inner: InnerUrl) -> Result<Self, Self::Error> {
-        let scheme = inner.scheme().parse()?;
-        Ok(Url { inner, scheme })
-    }
-}
-
 impl fmt::Display for Url {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.inner.fmt(f)
     }
 }
 
-#[derive(Clone, Debug, thiserror::Error)]
-pub enum ParseError {
-    #[error("unsupported scheme: {0}")]
-    UnsupportedScheme(#[from] UnsupportedScheme),
-    #[error("malformed url: {0:?}")]
-    Inner(#[from] InnerParseError),
-}
-
 impl FromStr for Url {
     type Err = ParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let inner = <InnerUrl as FromStr>::from_str(s)?;
-        let this = Url::try_from(inner)?;
-        Ok(this)
+        Url::parse_str(s).map_err(|reason| {
+            let input = s.to_string();
+            ParseError { input, reason }
+        })
     }
 }
 
