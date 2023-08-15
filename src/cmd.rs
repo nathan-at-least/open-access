@@ -5,6 +5,6 @@ use crate::{Repo, Url};
 ///
 /// The resulting publication and metadata are stored in the repository.
 pub async fn fetch(repo: &Repo, url: &Url) -> anyhow::Result<()> {
-    dbg!(repo, url);
+    tracing::debug!(?repo, ?url);
     todo!();
 }

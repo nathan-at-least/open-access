@@ -2,7 +2,7 @@ use ::url::{ParseError as InnerParseError, Url as InnerUrl};
 use std::fmt;
 use std::str::FromStr;
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct Url {
     inner: InnerUrl,
 }
@@ -52,6 +52,12 @@ impl Url {
 impl fmt::Display for Url {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         self.inner.fmt(f)
+    }
+}
+
+impl fmt::Debug for Url {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Url({:?})", self.inner.as_str())
     }
 }
 
