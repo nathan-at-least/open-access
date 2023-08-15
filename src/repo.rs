@@ -33,9 +33,9 @@ impl Repo {
 impl Default for Repo {
     fn default() -> Self {
         Repo(
-            dirs::data_local_dir()
+            directories_next::ProjectDirs::from("", "", env!("CARGO_PKG_NAME"))
                 .unwrap()
-                .join(env!("CARGO_PKG_NAME"))
+                .data_local_dir()
                 .join("repo"),
         )
     }
