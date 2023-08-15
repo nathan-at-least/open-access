@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: rustup toolchain install stable
-      - run: rustup component add clippy
+      - run: rustup component add clippy rustfmt
       - run: cargo install cargo-checkmate
       - uses: Swatinem/rust-cache@v2
       - run: cargo-checkmate run ${{ matrix.phase }}
