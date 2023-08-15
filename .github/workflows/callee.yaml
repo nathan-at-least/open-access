@@ -1,0 +1,17 @@
+name: locally defined cargo-checkmate phases
+
+on: [workflow_call]
+
+jobs:
+  run-phase:
+    strategy:
+      matrix:
+        phase: [audit, build, check, clippy, doc, format, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: Swatinem/rust-cache@v2
+      - run: rustup toolchain install stable
+      - run: rustup component add clippy rustfmt
+      - run: cargo install cargo-checkmate
+      - run: cargo-checkmate run ${{ matrix.phase }}
