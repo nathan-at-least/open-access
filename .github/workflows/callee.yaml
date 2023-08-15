@@ -10,11 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
-        with:
-            components: clippy,rustfmt
-            override: true
-      - uses: baptiste0928/cargo-install@v2
-        with:
-          crate: cargo-checkmate
+      - run: rustup toolchain install stable
+      - run: rustup component add clippy
+      - run: cargo install cargo-checkmate
+      - uses: Swatinem/rust-cache@v2
       - run: cargo-checkmate run ${{ matrix.phase }}
