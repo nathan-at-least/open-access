@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: Swatinem/rust-cache@v2
       - run: rustup toolchain install stable
       - run: rustup component add clippy rustfmt
       - run: cargo install cargo-checkmate
-      - uses: Swatinem/rust-cache@v2
       - run: cargo-checkmate run ${{ matrix.phase }}
