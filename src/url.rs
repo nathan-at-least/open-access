@@ -47,6 +47,10 @@ impl Url {
     pub fn path_segments(&self) -> impl Iterator<Item = &str> {
         self.inner.path_segments().into_iter().flatten()
     }
+
+    pub(crate) fn as_str(&self) -> &str {
+        self.inner.as_str()
+    }
 }
 
 impl fmt::Display for Url {
