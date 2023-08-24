@@ -1,0 +1,22 @@
+[package]
+name = "open-access"
+version = "0.1.0"
+description = "A cli tool to maintain a repository of local open access publications with searchable metadata."
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+async-trait.workspace = true
+clap = { workspace = true, features = ["derive", "unstable-doc"] }
+derive_more.workspace = true
+directories-next.workspace = true
+reqwest.workspace = true
+thiserror.workspace = true
+tokio = { workspace = true, features = ["rt", "macros", "fs"] }
+tracing-subscriber.workspace = true
+tracing.workspace = true
+url.workspace = true
+
+[dev-dependencies]
+test-case.workspace = true
